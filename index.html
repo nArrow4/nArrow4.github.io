@@ -173,7 +173,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-10-01 14:48:48 / Modified: 17:08:54" itemprop="dateCreated datePublished" datetime="2021-10-01T14:48:48+08:00">2021-10-01</time>
+              <time title="Created: 2021-10-01 14:48:48 / Modified: 17:45:48" itemprop="dateCreated datePublished" datetime="2021-10-01T14:48:48+08:00">2021-10-01</time>
             </span>
 
           
@@ -275,7 +275,27 @@
 <p>还有一个类似功能的指令revert。revert就是创建一个新的提交，将回溯的提交作为一个新的提交加入到提交树的下方。</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git revert HEAD^</span><br></pre></td></tr></table></figure>
 
+<h3 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h3><p>远程仓库（Repo）就是你在github上看到的那些文件。</p>
+<h4 id="远程仓库下载到本地"><a href="#远程仓库下载到本地" class="headerlink" title="远程仓库下载到本地"></a>远程仓库下载到本地</h4><p>可以选择https和ssh两种方式，一般来说ssh不用多次输密码，且速度较快。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> [仓库的网址或ssh链接]</span><br></pre></td></tr></table></figure>
 
+<p>如果是在github上新建了一个仓库，想跟本地某个文件夹关联起来。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git remote add origin [仓库的网址或ssh链接]</span><br></pre></td></tr></table></figure>
+
+<p>跟先clone再修改的效果一样。</p>
+<h4 id="将本地修改推送到远端"><a href="#将本地修改推送到远端" class="headerlink" title="将本地修改推送到远端"></a>将本地修改推送到远端</h4><p>远端的分支可以用$git\ branch\ -a$查看，通常是/remotes/origin/…的形式。如果想将本地的仓库的当前分支推送到远端的main分支。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin main</span><br></pre></td></tr></table></figure>
+
+<h4 id="从远端获取最新修改"><a href="#从远端获取最新修改" class="headerlink" title="从远端获取最新修改"></a>从远端获取最新修改</h4><p>首先是将远程分支同步到本地的/remotes/origin/…中，然后再做一个merge。这两个操作可以分步进行，也可以用一个指令同时进行。</p>
+<p>先看一下分步：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git fetch</span><br><span class="line">git merge /remotes/origin/main</span><br></pre></td></tr></table></figure>
+
+<p>再看一下一步到位的操作：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull origin main</span><br></pre></td></tr></table></figure>
+
+<p>具体效果完全一样。</p>
+<p>如果存在冲突，可以用–rebase选项</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull --rebase</span><br></pre></td></tr></table></figure>
 
 <h3 id="Tag"><a href="#Tag" class="headerlink" title="Tag"></a>Tag</h3><p>tag主要用于发布版本的管理，发布之后可以为git打上v0.0.1之类的标签。</p>
 <h4 id="Tag和Branch的区别"><a href="#Tag和Branch的区别" class="headerlink" title="Tag和Branch的区别"></a>Tag和Branch的区别</h4><p>tag对应某次commit。</p>
