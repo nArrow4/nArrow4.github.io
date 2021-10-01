@@ -20,15 +20,13 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Git-Tutorial@powered by 邓泽晖   [toc] github上不去？ 挂梯子 修改hosts  在C:\Windows\System32\drivers\etc找到hosts文件（可以用记事本打开），然后随便找个dns查询工具查一下github.com的IP。添加到hosts之后在cmd中刷新一下dns： 1ipconfig &#x2F;flushdns  大部分时候都可以解决，不然">
-<meta property="og:type" content="article">
-<meta property="og:title" content="nArrow4&#39;s blog">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="git-tutorial">
 <meta property="og:url" content="http://example.com/2021/10/01/git-tutorial/index.html">
 <meta property="og:site_name" content="nArrow4&#39;s blog">
-<meta property="og:description" content="Git-Tutorial@powered by 邓泽晖   [toc] github上不去？ 挂梯子 修改hosts  在C:\Windows\System32\drivers\etc找到hosts文件（可以用记事本打开），然后随便找个dns查询工具查一下github.com的IP。添加到hosts之后在cmd中刷新一下dns： 1ipconfig &#x2F;flushdns  大部分时候都可以解决，不然">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-10-01T06:45:27.374Z">
-<meta property="article:modified_time" content="2021-09-30T14:20:25.596Z">
+<meta property="article:published_time" content="2021-10-01T06:48:48.000Z">
+<meta property="article:modified_time" content="2021-10-01T06:48:48.110Z">
 <meta property="article:author" content="Zehui Deng">
 <meta name="twitter:card" content="summary">
 
@@ -45,7 +43,7 @@
   };
 </script>
 
-  <title> | nArrow4's blog</title>
+  <title>git-tutorial | nArrow4's blog</title>
   
 
 
@@ -166,7 +164,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
+          git-tutorial
         </h1>
 
         <div class="post-meta">
@@ -176,15 +174,8 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2021-10-01 14:45:27" itemprop="dateCreated datePublished" datetime="2021-10-01T14:45:27+08:00">2021-10-01</time>
+              <time title="Created: 2021-10-01 14:48:48" itemprop="dateCreated datePublished" datetime="2021-10-01T14:48:48+08:00">2021-10-01</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-09-30 22:20:25" itemprop="dateModified" datetime="2021-09-30T22:20:25+08:00">2021-09-30</time>
-              </span>
 
           
 
@@ -197,74 +188,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Git-Tutorial"><a href="#Git-Tutorial" class="headerlink" title="Git-Tutorial"></a>Git-Tutorial</h1><center>@powered by 邓泽晖 </center>
-
-<p>[toc]</p>
-<h3 id="github上不去？"><a href="#github上不去？" class="headerlink" title="github上不去？"></a>github上不去？</h3><ul>
-<li>挂梯子</li>
-<li>修改hosts</li>
-</ul>
-<p>在C:\Windows\System32\drivers\etc找到hosts文件（可以用记事本打开），然后随便找个dns查询工具查一下github.com的IP。添加到hosts之后在cmd中刷新一下dns：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ipconfig /flushdns</span><br></pre></td></tr></table></figure>
-
-<p>大部分时候都可以解决，不然就再换个ip。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#52.192.72.89				github.com</span></span><br><span class="line">52.69.186.44		      	github.com</span><br><span class="line"><span class="comment">#13.114.40.48		         github.com</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="git开发流程"><a href="#git开发流程" class="headerlink" title="git开发流程"></a>git开发流程</h3><h4 id="本地修改提交到远端demo"><a href="#本地修改提交到远端demo" class="headerlink" title="本地修改提交到远端demo"></a>本地修改提交到远端demo</h4><p>git中有几个概念：工作区、暂存区、本地仓库、远程仓库。</p>
-<p>从github中clone一个库之后，会建立一个本地仓库。对其中的文件进行的修改会同步到工作区中，使用add指令可以将工作区中的修改保留到暂存区，然后再使用commit提交到本地仓库，最后用push指令提交到远端（origin）。</p>
-<p>假设：</p>
-<ol>
-<li><p>有一个文件demo.cpp和一个文件夹/demo需要提交到远端</p>
-</li>
-<li><p>当前在dev分支下</p>
-</li>
-</ol>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git add demo.cpp /demo		<span class="comment"># 将文件（实际上是相对于上个版本的修改）从工作区添加到暂存区</span></span><br><span class="line">git commit -m <span class="string">&quot;你的提交信息&quot;</span> <span class="comment"># 将修改提交到本地仓库</span></span><br><span class="line">git pull origin dev			<span class="comment"># 解决冲突</span></span><br><span class="line">git push origin dev			<span class="comment"># 推送到远端</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="单人开发"><a href="#单人开发" class="headerlink" title="单人开发"></a>单人开发</h4><p>一般master/main分支作为主分支，发布到线上运行，所以一般不直接修改。要增加新功能的时候，一般检出一个develop/dev分支。开发完成后再新建一个release分支，在release上做测试，最后merge到dev和main上。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">git checkout main</span><br><span class="line">git checkout -b dev main</span><br><span class="line">...</span><br><span class="line">coding</span><br><span class="line">...</span><br><span class="line">git checkout -b release dev</span><br><span class="line">...</span><br><span class="line">testing</span><br><span class="line">...</span><br><span class="line">git checkout dev</span><br><span class="line">git merge release</span><br><span class="line">git push origin dev</span><br><span class="line"></span><br><span class="line">git checkout main</span><br><span class="line">git merge release</span><br><span class="line">git push origin main</span><br><span class="line"></span><br><span class="line">git tag v0.0.1</span><br><span class="line">git push origin --tags</span><br><span class="line"></span><br><span class="line">git branch</span><br></pre></td></tr></table></figure>
-
-<h4 id="多人开发"><a href="#多人开发" class="headerlink" title="多人开发"></a>多人开发</h4><p>多人开发时，流程和上面类似。区别就在于使用dev分支时，不要直接在dev上做修改，而是建一个自己的新分支比如[name]。</p>
-<p>每个人建一个新分支，在上面进行修改，修改完之后merge到dev里。此时的dev可能和你之前使用的dev不一样了（已经有其他人更新过了），所以需要rebase（或merge）一下，然后再做合并。</p>
-<p>如果rebase的时候有冲突，比如两个人同时修改了同一文件的同一行，那就需要手动解决冲突。然后rebase –continue。</p>
-<p>举个例子，A从dev拉了一个分支feature后，进行了一些修改。同时B从dev拉了另一个分支，修改并提交到dev中了，此时：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">git checkout dev</span><br><span class="line">git pull origin dev</span><br><span class="line">git checkout feature</span><br><span class="line">git rebase dev</span><br><span class="line">...</span><br><span class="line">如果有冲突就解决冲突</span><br><span class="line">...</span><br><span class="line">git add .</span><br><span class="line">git rebase --<span class="built_in">continue</span></span><br><span class="line">git checkout dev</span><br><span class="line">git merge --no-ff feature</span><br><span class="line">git push origin dev</span><br></pre></td></tr></table></figure>
-
-<p>注意这个feature分支创建在本地即可，每次直接提交dev。</p>
-<p>在多个feature同时merge到dev上之后，仍然可能存在逻辑错误，所以需要进一步测试。</p>
-<h3 id="Add"><a href="#Add" class="headerlink" title="Add"></a>Add</h3><h3 id="Merge"><a href="#Merge" class="headerlink" title="Merge"></a>Merge</h3><h4 id="–no-ff"><a href="#–no-ff" class="headerlink" title="–no-ff"></a>–no-ff</h4><h3 id="Rebase"><a href="#Rebase" class="headerlink" title="Rebase"></a>Rebase</h3><h4 id="rebase和merge的区别"><a href="#rebase和merge的区别" class="headerlink" title="rebase和merge的区别"></a>rebase和merge的区别</h4><h3 id="Tag"><a href="#Tag" class="headerlink" title="Tag"></a>Tag</h3><p>tag主要用于发布版本的管理，发布之后可以为git打上v0.0.1之类的标签。</p>
-<h4 id="Tag和Branch的区别"><a href="#Tag和Branch的区别" class="headerlink" title="Tag和Branch的区别"></a>Tag和Branch的区别</h4><p>tag对应某次commit。</p>
-<p>branch对应一系列的commit。</p>
-<p>举个例子。如果想在main分支上做修改，可以先检出一个新分支dev，在dev上不断commit。觉得比较完善了之后，就可以对最后一个commit打一个tag。</p>
-<p>也就是说tag用来标记开发过程中若干个commit中比较重要的那些。</p>
-<p>一般来说，需要改动代码时用branch，只需查看是用tag（当然也可以把某个tag来出来做一个新分支然后开发）。</p>
-<h4 id="tag简明使用"><a href="#tag简明使用" class="headerlink" title="tag简明使用"></a>tag简明使用</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag v0.0.1 [commit-id]</span><br></pre></td></tr></table></figure>
-
-<p>用来创建本地tag，默认（也就是不加commit-id）将为当前分支的最后一个commit创建tag（一般默认就够了）。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag -l</span><br></pre></td></tr></table></figure>
-
-<p>可以查看当前已有的tag。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag -d v0.0.1</span><br></pre></td></tr></table></figure>
-
-<p>删除本地的tag。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag v0.1 -m <span class="string">&quot;tag messages&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>在打tag的时候添加提示信息。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin v0.0.1</span><br></pre></td></tr></table></figure>
-
-<p>将标签提交到远程库。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin -d v0.0.1</span><br></pre></td></tr></table></figure>
-
-<p>删除远程库中的tag。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git show v0.0.1</span><br></pre></td></tr></table></figure>
-
-<p>可以查看该版本对应commit所做的修改。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout v0.0.1</span><br></pre></td></tr></table></figure>
-
-<p>切换标签。</p>
-
+        
     </div>
 
     
@@ -341,7 +265,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Git-Tutorial"><span class="nav-number">1.</span> <span class="nav-text">Git-Tutorial</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#github%E4%B8%8A%E4%B8%8D%E5%8E%BB%EF%BC%9F"><span class="nav-number">1.0.1.</span> <span class="nav-text">github上不去？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B"><span class="nav-number">1.0.2.</span> <span class="nav-text">git开发流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E4%BF%AE%E6%94%B9%E6%8F%90%E4%BA%A4%E5%88%B0%E8%BF%9C%E7%AB%AFdemo"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">本地修改提交到远端demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E4%BA%BA%E5%BC%80%E5%8F%91"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">单人开发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E4%BA%BA%E5%BC%80%E5%8F%91"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">多人开发</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Add"><span class="nav-number">1.0.3.</span> <span class="nav-text">Add</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Merge"><span class="nav-number">1.0.4.</span> <span class="nav-text">Merge</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%80%93no-ff"><span class="nav-number">1.0.4.1.</span> <span class="nav-text">–no-ff</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rebase"><span class="nav-number">1.0.5.</span> <span class="nav-text">Rebase</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#rebase%E5%92%8Cmerge%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.0.5.1.</span> <span class="nav-text">rebase和merge的区别</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tag"><span class="nav-number">1.0.6.</span> <span class="nav-text">Tag</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Tag%E5%92%8CBranch%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.0.6.1.</span> <span class="nav-text">Tag和Branch的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tag%E7%AE%80%E6%98%8E%E4%BD%BF%E7%94%A8"><span class="nav-number">1.0.6.2.</span> <span class="nav-text">tag简明使用</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
