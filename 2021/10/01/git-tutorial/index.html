@@ -28,7 +28,7 @@
 <meta property="og:description" content="Git-Tutorial@powered by 邓泽晖   github上不去？ 挂梯子 修改hosts  在C:\Windows\System32\drivers\etc找到hosts文件（可以用记事本打开），然后随便找个dns查询工具查一下github.com的IP。添加到hosts之后在cmd中刷新一下dns： 1ipconfig &#x2F;flushdns  大部分时候都可以解决，不然就再换个ip">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-10-01T06:48:48.000Z">
-<meta property="article:modified_time" content="2021-10-01T06:49:30.566Z">
+<meta property="article:modified_time" content="2021-10-01T09:08:54.714Z">
 <meta property="article:author" content="Zehui Deng">
 <meta name="twitter:card" content="summary">
 
@@ -177,7 +177,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-10-01 14:48:48 / Modified: 14:49:30" itemprop="dateCreated datePublished" datetime="2021-10-01T14:48:48+08:00">2021-10-01</time>
+              <time title="Created: 2021-10-01 14:48:48 / Modified: 17:08:54" itemprop="dateCreated datePublished" datetime="2021-10-01T14:48:48+08:00">2021-10-01</time>
             </span>
 
           
@@ -203,6 +203,10 @@
 <p>大部分时候都可以解决，不然就再换个ip。</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#52.192.72.89				github.com</span></span><br><span class="line">52.69.186.44		      	github.com</span><br><span class="line"><span class="comment">#13.114.40.48		         github.com</span></span><br></pre></td></tr></table></figure>
 
+<p>这三个试一下就差不多了。github的ip隔一段时间会变化，所以时不时需要重新改一下。学了计网就知道为啥了（</p>
+<h3 id="Git学习资料"><a href="#Git学习资料" class="headerlink" title="Git学习资料"></a>Git学习资料</h3><p>建议先看demo了解简单用法，资料作为文档等需要深度使用的时候再去查。</p>
+<p><a target="_blank" rel="noopener" href="https://learngitbranching.js.org/?locale=zh_CN">一个小游戏</a>：对git有一定了解之后会发现这个对git的可视化和解释是非常好的。</p>
+<p><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/896043488029600">廖雪峰的Git教程</a>：随便找个类似的教程作为查询文档即可。</p>
 <h3 id="git开发流程"><a href="#git开发流程" class="headerlink" title="git开发流程"></a>git开发流程</h3><h4 id="本地修改提交到远端demo"><a href="#本地修改提交到远端demo" class="headerlink" title="本地修改提交到远端demo"></a>本地修改提交到远端demo</h4><p>git中有几个概念：工作区、暂存区、本地仓库、远程仓库。</p>
 <p>从github中clone一个库之后，会建立一个本地仓库。对其中的文件进行的修改会同步到工作区中，使用add指令可以将工作区中的修改保留到暂存区，然后再使用commit提交到本地仓库，最后用push指令提交到远端（origin）。</p>
 <p>假设：</p>
@@ -227,13 +231,63 @@
 
 <p>注意这个feature分支创建在本地即可，每次直接提交dev。</p>
 <p>在多个feature同时merge到dev上之后，仍然可能存在逻辑错误，所以需要进一步测试。</p>
-<h3 id="Add"><a href="#Add" class="headerlink" title="Add"></a>Add</h3><h3 id="Merge"><a href="#Merge" class="headerlink" title="Merge"></a>Merge</h3><h4 id="–no-ff"><a href="#–no-ff" class="headerlink" title="–no-ff"></a>–no-ff</h4><h3 id="Rebase"><a href="#Rebase" class="headerlink" title="Rebase"></a>Rebase</h3><h4 id="rebase和merge的区别"><a href="#rebase和merge的区别" class="headerlink" title="rebase和merge的区别"></a>rebase和merge的区别</h4><h3 id="Tag"><a href="#Tag" class="headerlink" title="Tag"></a>Tag</h3><p>tag主要用于发布版本的管理，发布之后可以为git打上v0.0.1之类的标签。</p>
+<h3 id="Github-Hexo搭建个人网站"><a href="#Github-Hexo搭建个人网站" class="headerlink" title="Github+Hexo搭建个人网站"></a>Github+Hexo搭建个人网站</h3><p>markdown编辑+hexo编译发布在[username].github.io上。<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26625249">教程</a></p>
+<p>访问https://[username].github.io可以看到自己的博客站。</p>
+<h3 id="分支和提交"><a href="#分支和提交" class="headerlink" title="分支和提交"></a>分支和提交</h3><p>分支其实就是对某个提交的引用，所以多用分支！！多模块同步开发时非常有用。</p>
+<p>首先是将当前暂存区中所有修改提交到本地仓库：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m <span class="string">&quot;...&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后是新建分支的操作</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git branch [name]</span><br><span class="line">git checkout -b [name]</span><br></pre></td></tr></table></figure>
+
+<p>查看当前所有分支</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></figure>
+
+<p>如果想同时使用提交树的两个不同的分支上的修改，可以用merge。比如将dev分支的所有修改加入到main分支中。（初学最好用这个）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout main</span><br><span class="line">git merge dev</span><br></pre></td></tr></table></figure>
+
+<p>合并分支也可以用rebase。rebase之后新提交只会指向一个旧提交，这样提交树会更清晰。</p>
+<p>rebase就是把当前分支带来的所有历史提交建立在指定分支的所有提交的基础上。比如c&lt;-c1&lt;-main，c&lt;-c2&lt;-dev，想把dev分支的提交合并到main里面。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout main</span><br><span class="line">git rebase dev</span><br></pre></td></tr></table></figure>
+
+<p>结果是c&lt;-c2&lt;-dev，c-&lt;c2&lt;-c1’&lt;-main。</p>
+<h3 id="HEAD和提交树"><a href="#HEAD和提交树" class="headerlink" title="HEAD和提交树"></a>HEAD和提交树</h3><p>git将历史提交记录抽象成了一个多叉树，可以通过相关操作回溯到之前的提交。</p>
+<h4 id="HEAD"><a href="#HEAD" class="headerlink" title="HEAD"></a>HEAD</h4><p>HEAD指向的提交也就是显示在当前工作区下的内容。</p>
+<p>通常HEAD会指向一个分支，实际上是间接指向提交：HEAD-&gt;main-&gt;commit_id。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout main</span><br></pre></td></tr></table></figure>
+
+<p>也可以不用分支管理，直接指向提交：HEAD-&gt;commit_id。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout commit_id</span><br></pre></td></tr></table></figure>
+
+<p>log指令可以查看在git上做的历史提交记录，可以理解为是查看commit_id，一般是个$fed2da64c0efc5293610bdd892f82a58e8cbc5d8$这样的40位的哈希值。</p>
+<p>知道此哈希值之后就可以找到对应的commit，当然Git还是比较人性化的，一般输入哈希值的前4位就能锁定对应的commit_id。</p>
+<h4 id="相对引用"><a href="#相对引用" class="headerlink" title="相对引用"></a>相对引用</h4><p>相对引用主要基于^操作来实现，表示指定提交记录的父结点。^操作支持迭代使用，比如main^^等。</p>
+<p>如果需要找到main分支的上一个提交：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout main^</span><br></pre></td></tr></table></figure>
+
+<p>^只能用于分支名或HEAD。</p>
+<p>如果需要多次在提交树上向上移动的话，^操作就显得特别麻烦，git也提供了多步移动的操作符<del>。使用的时候和^类似，就是需要在</del>后面加上待回溯的提交数。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout main~2</span><br></pre></td></tr></table></figure>
+
+<h4 id="强制修改分支位置"><a href="#强制修改分支位置" class="headerlink" title="强制修改分支位置"></a>强制修改分支位置</h4><p>之前提到的几个操作都是移动HEAD指向的版本，如果想移动某个分支的版本的话：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -f main HEAD~3</span><br></pre></td></tr></table></figure>
+
+<h4 id="撤销变更"><a href="#撤销变更" class="headerlink" title="撤销变更"></a>撤销变更</h4><p>如果不仅仅想回溯分支的提交，同时还想删除回溯到的分支后面的所有提交，当其完全没有提交过。可以使用reset指令。</p>
+<p>reset之后，c2的commit记录删除了，但是所做的变更还会存在于暂存区中。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD^</span><br></pre></td></tr></table></figure>
+
+<p>还有一个类似功能的指令revert。revert就是创建一个新的提交，将回溯的提交作为一个新的提交加入到提交树的下方。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git revert HEAD^</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Tag"><a href="#Tag" class="headerlink" title="Tag"></a>Tag</h3><p>tag主要用于发布版本的管理，发布之后可以为git打上v0.0.1之类的标签。</p>
 <h4 id="Tag和Branch的区别"><a href="#Tag和Branch的区别" class="headerlink" title="Tag和Branch的区别"></a>Tag和Branch的区别</h4><p>tag对应某次commit。</p>
 <p>branch对应一系列的commit。</p>
 <p>举个例子。如果想在main分支上做修改，可以先检出一个新分支dev，在dev上不断commit。觉得比较完善了之后，就可以对最后一个commit打一个tag。</p>
 <p>也就是说tag用来标记开发过程中若干个commit中比较重要的那些。</p>
 <p>一般来说，需要改动代码时用branch，只需查看是用tag（当然也可以把某个tag来出来做一个新分支然后开发）。</p>
-<h4 id="tag简明使用"><a href="#tag简明使用" class="headerlink" title="tag简明使用"></a>tag简明使用</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag v0.0.1 [commit-id]</span><br></pre></td></tr></table></figure>
+<h4 id="tag常用方法"><a href="#tag常用方法" class="headerlink" title="tag常用方法"></a>tag常用方法</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag v0.0.1 [commit-id]</span><br></pre></td></tr></table></figure>
 
 <p>用来创建本地tag，默认（也就是不加commit-id）将为当前分支的最后一个commit创建tag（一般默认就够了）。</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag -l</span><br></pre></td></tr></table></figure>
@@ -334,7 +388,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Git-Tutorial"><span class="nav-number">1.</span> <span class="nav-text">Git-Tutorial</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#github%E4%B8%8A%E4%B8%8D%E5%8E%BB%EF%BC%9F"><span class="nav-number">1.0.1.</span> <span class="nav-text">github上不去？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B"><span class="nav-number">1.0.2.</span> <span class="nav-text">git开发流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E4%BF%AE%E6%94%B9%E6%8F%90%E4%BA%A4%E5%88%B0%E8%BF%9C%E7%AB%AFdemo"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">本地修改提交到远端demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E4%BA%BA%E5%BC%80%E5%8F%91"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">单人开发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E4%BA%BA%E5%BC%80%E5%8F%91"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">多人开发</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Add"><span class="nav-number">1.0.3.</span> <span class="nav-text">Add</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Merge"><span class="nav-number">1.0.4.</span> <span class="nav-text">Merge</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%80%93no-ff"><span class="nav-number">1.0.4.1.</span> <span class="nav-text">–no-ff</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rebase"><span class="nav-number">1.0.5.</span> <span class="nav-text">Rebase</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#rebase%E5%92%8Cmerge%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.0.5.1.</span> <span class="nav-text">rebase和merge的区别</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tag"><span class="nav-number">1.0.6.</span> <span class="nav-text">Tag</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Tag%E5%92%8CBranch%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.0.6.1.</span> <span class="nav-text">Tag和Branch的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tag%E7%AE%80%E6%98%8E%E4%BD%BF%E7%94%A8"><span class="nav-number">1.0.6.2.</span> <span class="nav-text">tag简明使用</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Git-Tutorial"><span class="nav-number">1.</span> <span class="nav-text">Git-Tutorial</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#github%E4%B8%8A%E4%B8%8D%E5%8E%BB%EF%BC%9F"><span class="nav-number">1.0.1.</span> <span class="nav-text">github上不去？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99"><span class="nav-number">1.0.2.</span> <span class="nav-text">Git学习资料</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B"><span class="nav-number">1.0.3.</span> <span class="nav-text">git开发流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E4%BF%AE%E6%94%B9%E6%8F%90%E4%BA%A4%E5%88%B0%E8%BF%9C%E7%AB%AFdemo"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">本地修改提交到远端demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E4%BA%BA%E5%BC%80%E5%8F%91"><span class="nav-number">1.0.3.2.</span> <span class="nav-text">单人开发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E4%BA%BA%E5%BC%80%E5%8F%91"><span class="nav-number">1.0.3.3.</span> <span class="nav-text">多人开发</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Github-Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99"><span class="nav-number">1.0.4.</span> <span class="nav-text">Github+Hexo搭建个人网站</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E5%92%8C%E6%8F%90%E4%BA%A4"><span class="nav-number">1.0.5.</span> <span class="nav-text">分支和提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HEAD%E5%92%8C%E6%8F%90%E4%BA%A4%E6%A0%91"><span class="nav-number">1.0.6.</span> <span class="nav-text">HEAD和提交树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HEAD"><span class="nav-number">1.0.6.1.</span> <span class="nav-text">HEAD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E5%AF%B9%E5%BC%95%E7%94%A8"><span class="nav-number">1.0.6.2.</span> <span class="nav-text">相对引用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%BA%E5%88%B6%E4%BF%AE%E6%94%B9%E5%88%86%E6%94%AF%E4%BD%8D%E7%BD%AE"><span class="nav-number">1.0.6.3.</span> <span class="nav-text">强制修改分支位置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%92%A4%E9%94%80%E5%8F%98%E6%9B%B4"><span class="nav-number">1.0.6.4.</span> <span class="nav-text">撤销变更</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tag"><span class="nav-number">1.0.7.</span> <span class="nav-text">Tag</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Tag%E5%92%8CBranch%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.0.7.1.</span> <span class="nav-text">Tag和Branch的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tag%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">1.0.7.2.</span> <span class="nav-text">tag常用方法</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
