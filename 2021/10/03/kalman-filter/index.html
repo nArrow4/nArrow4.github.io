@@ -20,15 +20,19 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="article">
+  <meta name="description" content="Kalman Filter滤波、平滑、预测这三个词很容易混淆：卡尔曼滤波在视觉里用于预测，在嵌软那边又是拿来平滑数据。实际上滤波、平滑、预测是三个并列的关系，都只是滤波器的一种工作状态。 根据感兴趣信号是在过去、现在、未来，被称为平滑、滤波、预测。也就是说，如果需要的是未来某个时间点的状态，那就是预测估计；如果是用过去和当前的观测值去估计当前的状态，那就是滤波估计；如果是估计过去的状态，那就是平滑">
+<meta property="og:type" content="article">
 <meta property="og:title" content="kalman filter">
 <meta property="og:url" content="http://example.com/2021/10/03/kalman-filter/index.html">
 <meta property="og:site_name" content="nArrow4&#39;s blog">
+<meta property="og:description" content="Kalman Filter滤波、平滑、预测这三个词很容易混淆：卡尔曼滤波在视觉里用于预测，在嵌软那边又是拿来平滑数据。实际上滤波、平滑、预测是三个并列的关系，都只是滤波器的一种工作状态。 根据感兴趣信号是在过去、现在、未来，被称为平滑、滤波、预测。也就是说，如果需要的是未来某个时间点的状态，那就是预测估计；如果是用过去和当前的观测值去估计当前的状态，那就是滤波估计；如果是估计过去的状态，那就是平滑">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pica.zhimg.com/80/v2-c17a9c53ee6c9a8288f7b4543f5ad934_720w.jpg?source=1940ef5c">
 <meta property="article:published_time" content="2021-10-03T11:24:49.000Z">
-<meta property="article:modified_time" content="2021-10-03T11:24:49.195Z">
+<meta property="article:modified_time" content="2021-10-04T15:12:27.121Z">
 <meta property="article:author" content="Zehui Deng">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pica.zhimg.com/80/v2-c17a9c53ee6c9a8288f7b4543f5ad934_720w.jpg?source=1940ef5c">
 
 <link rel="canonical" href="http://example.com/2021/10/03/kalman-filter/">
 
@@ -176,6 +180,13 @@
 
               <time title="Created: 2021-10-03 19:24:49" itemprop="dateCreated datePublished" datetime="2021-10-03T19:24:49+08:00">2021-10-03</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-10-04 23:12:27" itemprop="dateModified" datetime="2021-10-04T23:12:27+08:00">2021-10-04</time>
+              </span>
 
           
 
@@ -188,7 +199,38 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h1 id="Kalman-Filter"><a href="#Kalman-Filter" class="headerlink" title="Kalman Filter"></a>Kalman Filter</h1><h3 id="滤波、平滑、预测"><a href="#滤波、平滑、预测" class="headerlink" title="滤波、平滑、预测"></a>滤波、平滑、预测</h3><p>这三个词很容易混淆：卡尔曼滤波在视觉里用于预测，在嵌软那边又是拿来平滑数据。实际上滤波、平滑、预测是三个并列的关系，都只是滤波器的一种工作状态。</p>
+<p>根据感兴趣信号是在过去、现在、未来，被称为平滑、滤波、预测。也就是说，如果需要的是未来某个时间点的状态，那就是预测估计；如果是用过去和当前的观测值去估计当前的状态，那就是滤波估计；如果是估计过去的状态，那就是平滑估计。</p>
+<img src="https://pica.zhimg.com/80/v2-c17a9c53ee6c9a8288f7b4543f5ad934_720w.jpg?source=1940ef5c" alt="img"  />
+
+<h3 id="KF"><a href="#KF" class="headerlink" title="KF"></a>KF</h3><p>卡尔曼滤波本质上是一个数据融合算法，将不同传感器的测量值进行融合，得到更精确的估计值。</p>
+<p>具体推导参照Bzarg的<a target="_blank" rel="noopener" href="http://www.bzarg.com/p/how-a-kalman-filter-works-in-pictures/">How a Kalman filter works, in pictures</a>。这里只解释核心公式。</p>
+<p>要完成状态估计，首先要对装甲状态进行建模，在辅瞄任务中是<strong>位置和速度</strong>（在这里只考虑一维的情况）。卡尔曼滤波假设这两个变量都是随机的，且符合<strong>高斯分布</strong>。每个变量有一个均值$\mu$，作为随机分布的中心；另有一个方差$\sigma^2$衡量不确定性。</p>
+<p>则得到k时刻的状态$X_k=\begin{bmatrix} p_k\v_k\end{bmatrix}$，注意这个状态是自己建模的。</p>
+<p>同时用一个协方差矩阵来记录变量的相关性$P_k=\begin{bmatrix}\Sigma_{pp}&amp;\Sigma_{pv}\\Sigma_{vp}&amp;\Sigma_{vv}\end{bmatrix}$。</p>
+<blockquote>
+<p>方差：衡量单个变量的离散性</p>
+<p>协方差：衡量两个变量间的相关性</p>
+<p>协方差矩阵：用矩阵的形式描述方差和协方差</p>
+</blockquote>
+<p>那么在上一时刻和下一时刻中就会有一个状态转移的问题，即所建模的状态如何随时间而转移。<br>$$<br>X_k=F_kX_{k-1}\<br>P_k=F_kP_{k-1}F_k^T<br>$$<br>现在的问题就是如何建模F。如果假设一个$\Delta t$，则显然有<br>$$<br>\begin{equation}<br>\left{<br>    \begin{array}{}<br>        p_k = p_{k-1}+\Delta tv_{k-1} \<br>        v_k = v_{k-1}<br>    \end{array}\right.<br>\end{equation}<br>$$<br>即$F_k=\begin{bmatrix}1&amp;\Delta t \ 0&amp;1\end{bmatrix}$。</p>
+<p>如果进一步考虑外部印象（考虑加速度？），则有<br>$$<br>X_k=F_kX_{k-1}+B_kU_{k-1}\<br>P_k=F_kP_{k-1}F_k^T+Q_k<br>$$</p>
+<p>其中$B_k=\begin{bmatrix}\frac{\Delta t^2}{2}\ \Delta t\end{bmatrix}$。</p>
+<blockquote>
+<p>新的最佳估计 是基于 原最佳估计 和 已知外部影响 矫正后得到的预测。</p>
+<p>新的不确定性 是基于 原不确定性 和 外部环境的不确定性 得到的预测。</p>
+</blockquote>
+<p>在估计系统输出的时候，往往不仅仅使用以往的系统状态，还会使用传感器的测量值（IMU）。</p>
+<p>假设传感器读数为$Z_k$（即分布均值），协方差$R_k$。</p>
+<p>由于传感器的测量的物理量和系统状态可能不一样，所以用一个变换矩阵$H_k$将$X$从状态空间映射到传感器空间。<br>$$<br>\mu_k=H_kX_k\<br>\Sigma_k=H_kP_kH_k^T<br>$$<br>所以现在有两个状态信息：一个是由以往系统状态估计的$(\mu_k,\Sigma_k)$，一个是由传感器测量的$(Z_k, R_k)$。要生成预测信息，则模型需要对这两个信息进行调和。</p>
+<p>由于二者都符合高斯分布，则可以直接相乘，得到重叠部分。</p>
+<blockquote>
+<p>对于两个高斯分布$N(\mu_0, \sigma_0)$和$N(\mu_1, \sigma_1)$，相乘的结果为<br>$$<br>\mu’=\mu_0+K(\mu_1-\mu_0)\<br>\Sigma’=\Sigma_0-K\Sigma_0<br>$$<br>其中$K=\Sigma_0(\Sigma_0+\Sigma_1)^{-1}$，被称为卡尔曼增益。</p>
+</blockquote>
+<p>融合之后<br>$$<br>X_k’=X_k+K’(Z_k-H_kX_k)\<br>P_k’=P_k-K’H_kP_k\<br>K’=P_kH_k^T(H_kP_kH_k^T+R_k)^{-1}<br>$$<br>其中$X_k’$即为k时刻的最佳估计值。</p>
+<h3 id="EKF"><a href="#EKF" class="headerlink" title="EKF"></a>EKF</h3><h3 id="UKF"><a href="#UKF" class="headerlink" title="UKF"></a>UKF</h3><h3 id="推荐阅读"><a href="#推荐阅读" class="headerlink" title="推荐阅读"></a>推荐阅读</h3><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/35073143">在信号处理和图像处理领域，滤波，平滑和去噪几个词的区别和联系？【甜草莓的回答】</a> </p>
+<p><a target="_blank" rel="noopener" href="http://www.bzarg.com/p/how-a-kalman-filter-works-in-pictures/">图解卡尔曼滤波【Bzarg】</a></p>
+
     </div>
 
     
@@ -265,6 +307,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Kalman-Filter"><span class="nav-number">1.</span> <span class="nav-text">Kalman Filter</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BB%A4%E6%B3%A2%E3%80%81%E5%B9%B3%E6%BB%91%E3%80%81%E9%A2%84%E6%B5%8B"><span class="nav-number">1.0.1.</span> <span class="nav-text">滤波、平滑、预测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#KF"><span class="nav-number">1.0.2.</span> <span class="nav-text">KF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EKF"><span class="nav-number">1.0.3.</span> <span class="nav-text">EKF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UKF"><span class="nav-number">1.0.4.</span> <span class="nav-text">UKF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E8%8D%90%E9%98%85%E8%AF%BB"><span class="nav-number">1.0.5.</span> <span class="nav-text">推荐阅读</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
