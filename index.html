@@ -148,6 +148,63 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/05/particle-filter/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zehui Deng">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="nArrow4's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/05/particle-filter/" class="post-title-link" itemprop="url">particle filter</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-10-05 23:18:33" itemprop="dateCreated datePublished" datetime="2021-10-05T23:18:33+08:00">2021-10-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/03/kalman-filter/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -179,7 +236,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-10-05 11:48:07" itemprop="dateModified" datetime="2021-10-05T11:48:07+08:00">2021-10-05</time>
+                <time title="Modified: 2021-10-05 23:02:50" itemprop="dateModified" datetime="2021-10-05T23:02:50+08:00">2021-10-05</time>
               </span>
 
           
@@ -269,6 +326,8 @@ x_0=\mu, x_1=\mu+\sigma, x_2=\mu-\sigma</script><p>然后选择合适的权重�
 \mu=w_0x_0+w_1x_1+w_2x_2</script><p>最后再用采样结果计算y的分布。</p>
 <p>采样点集合权值分配有很多不同的策略（同时也带来了很多超参数），这里就不展开了。</p>
 <p>具体实践时分别对系统估计和传感器测量进行采样变换、加权均值和加权方差即可。</p>
+<h3 id="OpenCV实现鼠标追踪"><a href="#OpenCV实现鼠标追踪" class="headerlink" title="OpenCV实现鼠标追踪"></a>OpenCV实现鼠标追踪</h3><p>xyz合在一起 xyz分三个滤波器</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CV_EXPORTS_W</span> <span class="title">KalmanFilter</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:    </span><br><span class="line">    <span class="function">CV_WRAP <span class="title">KalmanFilter</span><span class="params">()</span></span>;                                                                           	<span class="comment">//构造默认KalmanFilter对象</span></span><br><span class="line">    <span class="function">CV_WRAP <span class="title">KalmanFilter</span><span class="params">(<span class="keyword">int</span> dynamParams, <span class="keyword">int</span> measureParams, <span class="keyword">int</span> controlParams=<span class="number">0</span>, <span class="keyword">int</span> type=CV_32F)</span></span>; <span class="comment">//完整构造KalmanFilter对象方法</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(<span class="keyword">int</span> dynamParams, <span class="keyword">int</span> measureParams, <span class="keyword">int</span> controlParams=<span class="number">0</span>, <span class="keyword">int</span> type=CV_32F)</span></span>;               <span class="comment">//初始化KalmanFilter对象，会替换原来的KF对象</span></span><br><span class="line">  </span><br><span class="line">    <span class="function">CV_WRAP <span class="keyword">const</span> Mat&amp; <span class="title">predict</span><span class="params">(<span class="keyword">const</span> Mat&amp; control=Mat())</span></span>;           <span class="comment">//计算预测的状态值    </span></span><br><span class="line">    <span class="function">CV_WRAP <span class="keyword">const</span> Mat&amp; <span class="title">correct</span><span class="params">(<span class="keyword">const</span> Mat&amp; measurement)</span></span>;             <span class="comment">//根据测量值更新状态值</span></span><br><span class="line"> </span><br><span class="line">    Mat statePre;            <span class="comment">//预测值 (x&#x27;(k)): x(k)=A*x(k-1)+B*u(k)</span></span><br><span class="line">    Mat statePost;           <span class="comment">//状态值 (x(k)): x(k)=x&#x27;(k)+K(k)*(z(k)-H*x&#x27;(k))</span></span><br><span class="line">    Mat transitionMatrix;    <span class="comment">//状态转移矩阵 (A)</span></span><br><span class="line">    Mat controlMatrix;       <span class="comment">//控制矩阵 B </span></span><br><span class="line">    Mat measurementMatrix;   <span class="comment">//测量矩阵 H</span></span><br><span class="line">    Mat processNoiseCov;     <span class="comment">//系统误差 Q</span></span><br><span class="line">    Mat measurementNoiseCov; <span class="comment">//测量误差 R</span></span><br><span class="line">    Mat errorCovPre;         <span class="comment">//最小均方误差 (P&#x27;(k)): P&#x27;(k)=A*P(k-1)*At + Q)</span></span><br><span class="line">    Mat gain;                <span class="comment">//卡尔曼增益   (K(k)): K(k)=P&#x27;(k)*Ht*inv(H*P&#x27;(k)*Ht+R)</span></span><br><span class="line">    Mat errorCovPost;        <span class="comment">//修正的最小均方误差 (P(k)): P(k)=(I-K(k)*H)*P&#x27;(k)</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 临时矩阵</span></span><br><span class="line">    Mat temp1;</span><br><span class="line">    Mat temp2;</span><br><span class="line">    Mat temp3;</span><br><span class="line">    Mat temp4;</span><br><span class="line">    Mat temp5;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">enum</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    OPTFLOW_USE_INITIAL_FLOW = CV_LKFLOW_INITIAL_GUESSES,</span><br><span class="line">    OPTFLOW_LK_GET_MIN_EIGENVALS = CV_LKFLOW_GET_MIN_EIGENVALS,</span><br><span class="line">    OPTFLOW_FARNEBACK_GAUSSIAN = <span class="number">256</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// predict</span></span><br><span class="line"><span class="function">CV_EXPORTS <span class="keyword">const</span> oclMat&amp; <span class="title">KalmanFilter::predict</span><span class="params">(<span class="keyword">const</span> oclMat&amp; control)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// statePre = transitionMatrix * statePost</span></span><br><span class="line">    <span class="built_in">gemm</span>(transitionMatrix, statePost, <span class="number">1</span>, <span class="built_in">oclMat</span>(), <span class="number">0</span>, statePre);</span><br><span class="line">    oclMat temp;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">if</span>(control.data)</span><br><span class="line">        <span class="built_in">gemm</span>(controlMatrix, control, <span class="number">1</span>, statePre, <span class="number">1</span>, statePre);</span><br><span class="line">    <span class="built_in">gemm</span>(transitionMatrix, errorCovPost, <span class="number">1</span>, <span class="built_in">oclMat</span>(), <span class="number">0</span>, temp1);</span><br><span class="line">    <span class="built_in">gemm</span>(temp1, transitionMatrix, <span class="number">1</span>, processNoiseCov, <span class="number">1</span>, errorCovPre, GEMM_2_T);</span><br><span class="line">    statePre.<span class="built_in">copyTo</span>(statePost);</span><br><span class="line">    <span class="keyword">return</span> statePre;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// update</span></span><br><span class="line"><span class="function">CV_EXPORTS <span class="keyword">const</span> oclMat&amp; <span class="title">KalmanFilter::correct</span><span class="params">(<span class="keyword">const</span> oclMat&amp; measurement)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">CV_Assert</span>(measurement.<span class="built_in">empty</span>() == <span class="literal">false</span>);</span><br><span class="line">    <span class="built_in">gemm</span>(measurementMatrix, errorCovPre, <span class="number">1</span>, <span class="built_in">oclMat</span>(), <span class="number">0</span>, temp2);</span><br><span class="line">    <span class="built_in">gemm</span>(temp2, measurementMatrix, <span class="number">1</span>, measurementNoiseCov, <span class="number">1</span>, temp3, GEMM_2_T);</span><br><span class="line">    Mat temp;</span><br><span class="line">    <span class="built_in">solve</span>(<span class="built_in">Mat</span>(temp3), <span class="built_in">Mat</span>(temp2), temp, DECOMP_SVD);</span><br><span class="line">    temp4.<span class="built_in">upload</span>(temp);</span><br><span class="line">    gain = temp4.<span class="built_in">t</span>();</span><br><span class="line">    <span class="built_in">gemm</span>(measurementMatrix, statePre, <span class="number">-1</span>, measurement, <span class="number">1</span>, temp5);</span><br><span class="line">    <span class="built_in">gemm</span>(gain, temp5, <span class="number">1</span>, statePre, <span class="number">1</span>, statePost);</span><br><span class="line">    <span class="built_in">gemm</span>(gain, temp2, <span class="number">-1</span>, errorCovPre, <span class="number">1</span>, errorCovPost);</span><br><span class="line">    <span class="keyword">return</span> statePost;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="推荐阅读"><a href="#推荐阅读" class="headerlink" title="推荐阅读"></a>推荐阅读</h3><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/35073143">在信号处理和图像处理领域，滤波，平滑和去噪几个词的区别和联系？【甜草莓的回答】</a> </p>
 <p><a target="_blank" rel="noopener" href="http://www.bzarg.com/p/how-a-kalman-filter-works-in-pictures/">图解卡尔曼滤波【Bzarg】</a></p>
 <p> <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/41767489">概率机器人——扩展卡尔曼滤波、无迹卡尔曼滤波【fishmarch】</a></p>
@@ -621,7 +680,7 @@ x_0=\mu, x_1=\mu+\sigma, x_2=\mu-\sigma</script><p>然后选择合适的权重�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
